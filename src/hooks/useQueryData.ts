@@ -3,7 +3,7 @@ import {
   QueryFunction,
   QueryKey,
   useQuery,
-} from '@tanstack/react-query'
+} from "@tanstack/react-query";
 
 export const useQueryData = (
   queryKey: QueryKey,
@@ -13,6 +13,6 @@ export const useQueryData = (
   const { data, isPending, isFetched, refetch, isFetching } = useQuery({
     queryKey,
     queryFn,
-  })
-  return { data, isPending, isFetched, refetch, isFetching }
-}
+  });
+  return { data, isPending, isFetched, refetch, isFetching };
+};

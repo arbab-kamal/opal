@@ -1,4 +1,9 @@
-import { getAllUserVideos, getWorkspaceFolders } from "@/actions/workspace";
+import { getNotifications } from "@/actions/user";
+import {
+  getAllUserVideos,
+  getWorkspaceFolders,
+  getWorkSpaces,
+} from "@/actions/workspace";
 import CreateForlders from "@/components/global/create-folders";
 import CreateWorkspace from "@/components/global/create-workspace";
 import Folders from "@/components/global/folders";
@@ -24,10 +29,18 @@ const Page = async ({ params: { workspaceId } }: Props) => {
   });
 
   await query.prefetchQuery({
-    queryKey: ["user-videos"],
+    queryKey: ["user-video"],
     queryFn: () => getAllUserVideos(workspaceId),
   });
+  await query.prefetchQuery({
+    queryKey: ["user-workspaces"],
+    queryFn: () => getWorkSpaces(),
+  });
 
+  await query.prefetchQuery({
+    queryKey: ["user-notifications"],
+    queryFn: () => getNotifications(),
+  });
   return (
     <HydrationBoundary state={dehydrate(query)}>
       <div>
