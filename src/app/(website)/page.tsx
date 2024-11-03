@@ -1,3 +1,10 @@
+import VoiceFlowAgent from "@/components/global/voiceflow";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <main>
+      {" "}
+      <VoiceFlowAgent />{" "}
+    </main>
+  );
 }

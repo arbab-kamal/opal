@@ -1,15 +1,13 @@
-import { getWixContent, howToPost } from '@/actions/workspace'
-import HowToPost from '@/components/global/how-to-post'
-import VideoCard from '@/components/global/videos/video-card'
-import React from 'react'
+import { getWixContent, howToPost } from "@/actions/workspace";
+import HowToPost from "@/components/global/how-to-post";
+import VideoCard from "@/components/global/videos/video-card";
+import React from "react";
 
-type Props = {}
+const Home = async () => {
+  const videos = await getWixContent();
+  const post = await howToPost();
 
-const Home = async (props: Props) => {
-  const videos = await getWixContent()
-  const post = await howToPost()
-
-  console.log(videos)
+  console.log(videos);
 
   return (
     <div className="flex items-center justify-center flex-col gap-2">
@@ -24,14 +22,11 @@ const Home = async (props: Props) => {
                 workspaceId={video.workSpaceId!}
               />
             ))
-          : ''}
-        <HowToPost
-          title={post?.title}
-          html={post?.content}
-        />
+          : ""}
+        <HowToPost title={post?.title} html={post?.content} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

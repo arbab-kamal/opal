@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
+import { createClient, OAuthStrategy } from "@wix/sdk";
+import { items } from "@wix/data";
 
 import { client } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { sendEmail } from "./user";
+import axios from "axios";
 
 export const verifyAccessToWorkspace = async (workspaceId: string) => {
   try {
@@ -415,6 +418,74 @@ export const editVideoInfo = async (
     if (video) return { status: 200, data: "Video successfully updated" };
     return { status: 404, data: "Video not found" };
   } catch (error) {
+    return { status: 400 };
+  }
+};
+export const howToPost = async () => {
+  try {
+    const response = await axios.get(process.env.CLOUD_WAYS_POST as string);
+    if (response.data) {
+      return {
+        title: response.data[0].title.rendered,
+        content: response.data[0].content.rendered,
+      };
+    }
+  } catch (error) {
+    return { status: 400 };
+  }
+};
+export const getWixContent = async () => {
+  try {
+    const myWixClient = createClient({
+      modules: { items },
+      auth: OAuthStrategy({
+        clientId: process.env.WIX_OAUTH_KEY as string,
+      }),
+    });
+
+    const videos = await myWixClient.items
+      .queryDataItems({
+        dataCollectionId: "opal-video",
+      })
+      .find();
+
+    const videoIds = videos.items.map((v) => v.data?.title);
+
+    const video = await client.video.findMany({
+      where: {
+        id: {
+          in: videoIds,
+        },
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        title: true,
+        source: true,
+        processing: true,
+        workSpaceId: true,
+        User: {
+          select: {
+            firstname: true,
+            lastname: true,
+            image: true,
+          },
+        },
+        Folder: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (video && video.length > 0) {
+      return { status: 200, data: video };
+    }
+    return { status: 404 };
+  } catch (error) {
+    console.log(error);
     return { status: 400 };
   }
 };

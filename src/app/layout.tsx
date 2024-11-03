@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme";
 import ReactQueryProvider from "@/react-query";
 import { ReduxProvider } from "@/redux/provider";
 import { Toaster } from "sonner";
+
 const manrope = Manrope({
   subsets: ["latin"],
 });
