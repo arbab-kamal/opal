@@ -1,5 +1,6 @@
 import React from "react";
-import LandingPageNavBar from "./_components/navbar";
+
+import Main from "./_components/main";
 
 type Props = {
   children: React.ReactNode;
@@ -7,8 +8,8 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="flex flex-col py-10 px-10 xl:px-0 container">
-      <LandingPageNavBar />
+    <div className="flex flex-col ">
+      <Main />
       {children}
     </div>
   );
